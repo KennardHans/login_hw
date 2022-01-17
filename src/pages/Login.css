@@ -1,0 +1,11 @@
+.Login{
+  background-image:url('../assets/image2.png');
+  height:100vh;
+}
+.searchbar{
+  display:flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  color:black;
+}
