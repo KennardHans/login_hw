@@ -5,23 +5,13 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 const Searchbar = () => {
   let [input, setInput] = useState("");
-  let handleChange = (e) => {
-    setInput(e);
-  };
   let [result, setResult] = useState("");
   let [next, setNext] = useState("");
-  let option = [];
+  let [options,setOptions] = useState([]);
+  let option = []
   let arr = [];
-  useEffect(() => {
-    let call = async () => {
-      await axios.get("https://swapi.dev/api/people/").then((res) => {
-        setResult(res.data.results);
-        setNext(res.data.next);
-      });
-    };
-    call();
-  }, []);
-  useEffect(() => {
+  let handleChange = (e) => {
+    setInput(e);
     arr = [];
     let i = 0;
     let j = 0;
@@ -43,9 +33,45 @@ const Searchbar = () => {
         else{
             break;
         }
+        setOptions(option)
         j++;
     }
-    console.log(option)
+    console.log(options)
+  };
+  useEffect(() => {
+    let call = async () => {
+      await axios.get("https://swapi.dev/api/people/").then((res) => {
+        setResult(res.data.results);
+        setNext(res.data.next);
+      });
+    };
+    call();
+  }, []);
+  useEffect(() => {
+    // arr = [];
+    // let i = 0;
+    // let j = 0;
+    // while (i < result.length) {
+    //   if (result[i].name.toUpperCase().indexOf(input.toUpperCase()) !== -1) {
+    //     arr.push(result[i].name);
+    //   }
+    //   i++;
+    // }
+    // console.log(arr);
+    // while(option.length<3){
+    //     if(arr[j]!== undefined){
+    //         option.push(
+    //             {
+    //                 value: arr[j]
+    //             }
+    //         )
+    //     }
+    //     else{
+    //         break;
+    //     }
+    //     j++;
+    // }
+    // console.log(option)
   }, [input]);
 
   return (
@@ -55,13 +81,13 @@ const Searchbar = () => {
           className="autocomplete"
           placeholder="your character name"
           onChange={handleChange}
-          options={option}
-          filterOption={(inputValue, option) => {
-            return (
-              option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !==
-              -1
-            );
-          }}
+          options={options}
+        //   filterOption={(inputValue, option) => {
+        //     return (
+        //       option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !==
+        //       -1
+        //     );
+        //   }}
         />
       </div>
       <div>
