@@ -8,12 +8,9 @@ const Searchbar = () => {
     let handleChange = (e) =>{
         setInput(e);
     }
-    let [option,setOption] = useState('');
     let [result,setResult] = useState('');
     let [next,setNext] = useState('');
-    let [option1,setOption1] = useState('');
-    let [option2,setOption2] = useState('');
-    let [option3,setOption3] = useState('');
+    let arr = [];
     useEffect(() => {
         let call = async () => {
             await axios.get('https://swapi.dev/api/people/').then(res =>{
@@ -23,7 +20,22 @@ const Searchbar = () => {
         }
         call();
     },[])
-    console.log((result.filter(person => true)));
+    useEffect(() => {
+        arr = [];
+        let i = 0;
+        while(i<result.length){
+            if(result[i].name.toUpperCase().indexOf(input.toUpperCase()) !== -1){
+                arr.push(result[i].name)
+            }
+            i++;
+        }
+        console.log(arr)
+    },[input])
+    let option = [
+        {
+            value:arr[0]
+        }
+    ]
     return ( 
         <div>
             <div>
@@ -31,11 +43,7 @@ const Searchbar = () => {
                 className="autocomplete"
                 placeholder="your character name"
                 onChange={handleChange}
-                options={[
-                    {
-                        value: "hey"
-                    }
-                ]}
+                options={option}
                 filterOption={(inputValue,option) =>{
                     return option.value.toUpperCase().indexOf(inputValue.toUpperCase()) !== -1
                 }}
